@@ -13,12 +13,6 @@ This page lists the documentation files that are published through GitBook.
 | `class-diagrams.md` | Joplin-exported Mermaid class diagrams for core domain objects. |
 | `files.md` | Documentation file index. |
 
-## Architecture Files
-
-| File | Purpose |
-| --- | --- |
-| `architecture/system-components.md` | Joplin-exported PlantUML system component diagram. |
-
 ## Feature Files
 
 | File | Purpose |
@@ -27,8 +21,6 @@ This page lists the documentation files that are published through GitBook.
 | `features/pos-login-and-license-activation.md` | POS login and license activation PlantUML flow. |
 | `features/signed-pos-request-verification.md` | Signed POS request verification PlantUML sequence. |
 | `features/rbac-permission-check.md` | RBAC permission check PlantUML flow. |
-| `features/pos-checkout-activity.md` | POS checkout activity PlantUML flow. |
-| `features/pos-checkout-sequence.md` | POS checkout sequence PlantUML flow. |
 | `features/sales-process-diagram.md` | Sales process PlantUML flow. |
 | `features/master-data-import-to-organization-products.md` | Master data import PlantUML flow. |
 | `features/inventory-stock-movement.md` | Inventory stock movement PlantUML flow. |
