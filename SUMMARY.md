@@ -2,15 +2,12 @@
 
 * [Overview](README.md)
 
-## Architecture
+## POS
 
 * [System Components](architecture/system-components.md)
 * [Class Diagrams](class-diagrams.md)
 * [System And Process Diagrams](diagrams/README.md)
-
-## Features
-
-* [POS core](business-rules-and-processes.md)
+* [POS Core](business-rules-and-processes.md)
 * [Desktop Login Flow](features/login-flow.md)
 * [POS Login And License Activation](features/pos-login-and-license-activation.md)
 * [Signed POS Request Verification](features/signed-pos-request-verification.md)

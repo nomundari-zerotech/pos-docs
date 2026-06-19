@@ -44,4 +44,4 @@ This page lists the documentation files that are published through GitBook.
 
 ## GitBook Publishing Files
 
-GitBook reads `.gitbook.yaml` from the repository root and uses `SUMMARY.md` to build the sidebar. The sidebar is grouped as Architecture, Features, and Files.
+GitBook reads `.gitbook.yaml` from the repository root and uses `SUMMARY.md` to build the sidebar. The sidebar is grouped as POS and Files.
