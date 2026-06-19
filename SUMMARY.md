@@ -10,7 +10,7 @@
 
 ## Features
 
-* [Business Rules And Processes](business-rules-and-processes.md)
+* [POS core](business-rules-and-processes.md)
 * [Desktop Login Flow](features/login-flow.md)
 * [POS Login And License Activation](features/pos-login-and-license-activation.md)
 * [Signed POS Request Verification](features/signed-pos-request-verification.md)
