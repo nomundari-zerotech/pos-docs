@@ -1,8 +1,16 @@
 # Summary
 
-## Kass POS
-
 * [Overview](README.md)
-* [Business Rules And Processes](business-rules-and-processes.md)
+
+## Architecture
+
 * [Class Diagrams](class-diagrams.md)
-* [PlantUML Diagrams](diagrams/README.md)
+* [System And Process Diagrams](diagrams/README.md)
+
+## Features
+
+* [Business Rules And Processes](business-rules-and-processes.md)
+
+## Files
+
+* [Documentation Files](files.md)
