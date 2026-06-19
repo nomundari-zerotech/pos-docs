@@ -1,0 +1,56 @@
+@startuml
+title Master Data Import To Organization Products
+
+|Admin User|
+start
+:Open product import or creation screen;
+:Search/select master category or product;
+
+|Admin Frontend|
+:Request master data records;
+
+|Backend /master-data|
+:Read master category, product, variant, price, vendor, bundle records;
+:Return selected master data;
+
+|Admin User|
+:Confirm import into organization;
+
+|Backend /admin or /super-admin|
+:Validate organization context;
+if (Product already imported by referenceId?) then (Yes)
+  :Load existing organization product;
+else (No)
+  :Create organization product with referenceId;
+endif
+
+if (Category reference exists?) then (No)
+  :Create organization category reference;
+else (Yes)
+endif
+
+if (Vendor reference exists?) then (No)
+  :Create organization vendor reference;
+else (Yes)
+endif
+
+:Create or update variants from master variants;
+:Create or update prices from master prices;
+
+if (Master product is bundle?) then (Yes)
+  :Create bundle item references;
+else (No)
+endif
+
+:Initialize stock records when required;
+
+|Database|
+:Persist organization-local product data;
+
+|Backend /admin or /super-admin|
+:Return imported product result;
+
+|Admin User|
+:Review product in organization catalog;
+stop
+@enduml

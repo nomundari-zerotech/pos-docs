@@ -1,0 +1,43 @@
+@startuml
+title POS Checkout Sequence
+
+actor Cashier
+participant "POS Desktop UI" as UI
+participant "Desktop Main Service" as Main
+database "PGlite Local DB" as Lite
+participant "Payment Processor" as Processor
+participant "Backend /pos/payments" as PosPayments
+
+Cashier -> UI: Scan/select products
+UI -> Main: Load products, prices, and stock
+Main -> Lite: Query product, price, stock
+Lite --> Main: Product data
+Main --> UI: Cart line details
+
+Cashier -> UI: Confirm checkout
+UI -> Main: Process order
+Main -> Main: Calculate totals and tax
+
+alt Provider-backed payment
+  Main -> Processor: Create payment request
+  Processor -> PosPayments: POST provider payment request
+  PosPayments --> Processor: Provider payment result
+  Processor --> Main: Approved or rejected
+else Local cash/manual payment
+  Main -> Main: Accept local payment details
+end
+
+alt Payment approved
+  Main -> Lite: Insert payment
+  Main -> Lite: Insert order
+  Main -> Lite: Insert order items
+  Main -> Lite: Update stocks
+  Main -> Lite: Insert product logs
+  Lite --> Main: Saved order id
+  Main --> UI: Receipt data
+  UI --> Cashier: Show or print receipt
+else Payment rejected
+  Main --> UI: Payment failure
+  UI --> Cashier: Retry or cancel
+end
+@enduml
