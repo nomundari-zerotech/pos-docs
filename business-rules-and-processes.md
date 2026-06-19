@@ -127,13 +127,64 @@ Architecture of the Pos system.
 
 ## 5. Master Data
 
-
 - Master data нь category, product, variant, price, vendor, bundle-ийн эх үүсвэр болно.
 - Organization-local product үүсэхдээ master record-ийн `referenceId`-г хадгална.
 - Бүтээгдэхүүни үүсэх үед мастер дата-гаас хайж үзнэ./BarCode-р/
 
 ### Process Diagram
 
+```mermaid
+sequenceDiagram
+  autonumber
+  actor MasterUser as Master User
+  participant API as Import endpoint
+  participant Controller as importProducts
+  participant Category as CategoryService
+  participant Vendor as VendorService
+  participant Product as createProduct
+  participant Variant as createVariants
+  participant Bundle as createBundle
+  participant DB as masterDb
+
+  MasterUser->>API: POST /master-data/products/import with JSON file
+  API->>Controller: Validate file input
+  Controller->>Controller: Parse JSON products
+
+  loop Each product
+    opt categoryName exists
+      Controller->>Category: Find or create category
+      Category->>DB: Select or insert masterCategories
+      Category-->>Controller: categoryId
+    end
+
+    opt vendor exists
+      Controller->>Vendor: Find or create vendor
+      Vendor->>DB: Select or insert masterVendors
+      Vendor-->>Controller: vendorId
+    end
+
+    opt variants exist
+      Controller->>Controller: Normalize variants
+    end
+
+    Controller->>Product: Create product with categoryId and vendorId
+    Product->>DB: Insert masterProducts in transaction
+    Product->>Variant: Insert variants and prices
+    Variant->>DB: Insert masterVariants and masterPrices
+
+    opt isBundle and bundleItems exist
+      Product->>Bundle: Create bundle rows
+      Bundle->>DB: Insert bundles
+    end
+
+    Product-->>Controller: Created product result
+  end
+
+  Controller-->>API: Imported product results
+  API-->>MasterUser: Products imported successfully
+```
+
+[Open detailed master data product import sequence](features/master-data-import-to-organization-products.md)
 
 ### Related Code
 
