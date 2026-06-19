@@ -1,0 +1,83 @@
+# POS Checkout Activity
+
+```plantuml
+
+@startuml
+title POS Checkout Activity
+
+|Cashier|
+start
+:Open checkout;
+
+repeat
+  :Scan barcode or select product;
+
+  |POS Desktop|
+  :Find product, variant, and price;
+  if (Product available?) then (Yes)
+    :Check local stock;
+    if (Stock available?) then (Yes)
+      :Add item to cart;
+    else (No)
+      :Show stock error;
+    endif
+  else (No)
+    :Show product not found;
+  endif
+
+  |Cashier|
+repeat while (Add more items?) is (Yes)
+
+|POS Desktop|
+if (Cart has items?) then (Yes)
+  :Calculate subtotal, tax, discount, and final amount;
+else (No)
+  :Cancel empty checkout;
+  stop
+endif
+
+|Cashier|
+if (Apply discount?) then (Yes)
+  :Choose discount;
+  |POS Desktop|
+  :Recalculate final amount;
+else (No)
+endif
+
+|Cashier|
+:Select payment method;
+:Confirm payment;
+
+|POS Desktop|
+:Create local payment attempt;
+if (Payment method requires provider?) then (Yes)
+  :Call payment provider endpoint;
+  if (Provider approves?) then (Yes)
+    :Mark payment paid;
+  else (No)
+    :Show payment failure;
+    |Cashier|
+    if (Retry payment?) then (Yes)
+      :Select payment method;
+      |POS Desktop|
+      :Start a new payment attempt;
+      stop
+    else (No)
+      stop
+    endif
+  endif
+else (No)
+  :Record local cash or manual payment;
+endif
+
+|POS Desktop|
+:Create order and order items;
+:Decrease local stock;
+:Write product logs;
+:Store receipt data;
+
+|Cashier|
+:Print or show receipt;
+:Complete checkout;
+stop
+@enduml

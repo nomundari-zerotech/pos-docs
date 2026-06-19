@@ -4,8 +4,8 @@ This documentation explains the main Kass POS business flows, domain models, and
 
 ## Contents
 
-- [Architecture](class-diagrams.md) - domain models, system components, and process diagrams.
-- [Features](business-rules-and-processes.md) - business rules and user/system behavior by feature area.
+- [Architecture](architecture/system-components.md) - POS architecture, domain models, system components, and process diagrams.
+- [Features](business-rules-and-processes.md) - business rules, POS flows, access checks, checkout, sales, master data, and inventory behavior.
 - [Files](files.md) - documentation file index and diagram asset layout.
 
 ## Diagram Format

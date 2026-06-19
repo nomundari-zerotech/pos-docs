@@ -1,0 +1,50 @@
+# RBAC Permission Check
+
+```plantuml
+
+@startuml
+title RBAC Permission Check
+
+|Client App|
+start
+:Send authenticated API request;
+
+|Backend Monolith|
+:Resolve mounted surface and route;
+:Read bearer token;
+
+if (Token present?) then (Yes)
+  :Verify token;
+else (No)
+  :Reject as unauthorized;
+  stop
+endif
+
+if (Token valid?) then (Yes)
+  :Resolve user id, org id, and role id;
+else (No)
+  :Reject as unauthorized;
+  stop
+endif
+
+if (Route requires permission?) then (Yes)
+  :Find required route permission;
+else (No)
+  :Allow request handler;
+  stop
+endif
+
+|Database|
+:Load role permissions for org and role;
+
+|Backend Monolith|
+:Parse role permission list;
+if (Required permission granted?) then (Yes)
+  :Attach auth context;
+  :Allow request handler;
+else (No)
+  :Reject as forbidden;
+endif
+
+stop
+@enduml

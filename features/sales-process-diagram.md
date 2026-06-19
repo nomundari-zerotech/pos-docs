@@ -1,0 +1,99 @@
+# Sales Process Diagram
+
+```plantuml
+
+@startuml
+title Sales
+
+|Cashier|
+start
+:scan barCode;
+
+|Pos Desktop App|
+:Search item by barcode /in memory search/;
+
+if (item exists) then (Yes)
+  :add item in order table;
+  stop
+else (No)
+  :show alert;
+   stop
+endif
+
+|Cashier|
+start
+:set quantity;
+|Pos Desktop App|
+:set quantity of item /no need to check balance/;
+stop
+
+|Cashier|
+start
+:click on the payment button;
+|Pos Desktop App|
+:get all enabled payment options;
+:render payment options;
+stop
+
+|Cashier|
+start
+:select payment method;
+:set amount;
+|Pos Desktop App|
+if (payment option == 'cash' && inputAmount > totalPayment) then (Yes)
+	:calculate remaining amount;
+else (No)
+	if (inputAmount > totalPayment) then (Yes)
+		:show alert and change it into totalPayment;
+	else (No)
+		:calculate amount;
+	endif
+endif
+:render calculated amount;
+stop
+
+|Cashier|
+start
+:click on the pay button;
+|Pos Desktop App|
+:check amount and payment option;
+if (payment option == 'card') then (Yes)
+	:send request to pin pad;
+else (No)
+	if (payment option == 'cash') then (Yes)
+		:mark as cash;
+	else (No)
+		|Backend|
+		:send request to Payment Gateway;
+	endif
+endif
+if (payment result is success) then (Yes)
+	|Database|
+	:write request log with response;
+else (No)
+	|Database|
+	:write request log with error;
+endif
+|Database|
+:write Order and OrderItem data;
+if (write it successfully) then (Yes)
+	|Pos desktop app|
+	:generate e-barimt;
+	if (successfully generated) then (Yes)
+		:print receipt;
+	else (No)
+		:write log;
+	endif
+	|Database|
+	:save receipt and response;
+	:save payment info;
+	stop
+else (No)
+	if (is online) then (Yes)
+		|Sync service|
+		:send request as dead log queue;
+	else (No)
+		:write log into log file;
+endif
+stop
+@enduml
